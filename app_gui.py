@@ -36,12 +36,16 @@ class App(ctk.CTk):
         self._save_path = None
         self._busy = False
 
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(4, weight=1)
+
         self._build_header()
         self._build_controls()
-        self._build_footer()
         self._build_list()
         self._build_progress()
         self._build_preview()
+        self._build_footer()
 
         self.status.configure(text="Add screenshots to get started.")
         self.after(120, self._poll)
@@ -64,7 +68,7 @@ class App(ctk.CTk):
     # ------------------------------------------------------------------ UI
     def _build_header(self):
         head = ctk.CTkFrame(self, fg_color="transparent")
-        head.pack(fill="x", padx=26, pady=(20, 4))
+        head.grid(row=0, column=0, sticky="ew", padx=26, pady=(14, 2))
         ctk.CTkLabel(
             head, text="ezzyScrapper",
             font=ctk.CTkFont(family="Segoe UI", size=26, weight="bold"), text_color=TXT,
@@ -76,7 +80,7 @@ class App(ctk.CTk):
 
     def _build_controls(self):
         c = ctk.CTkFrame(self, fg_color="transparent")
-        c.pack(fill="x", padx=26, pady=6)
+        c.grid(row=1, column=0, sticky="ew", padx=26, pady=4)
 
         self.btn_images = ctk.CTkButton(
             c, text="+  Select Images", command=self.pick_images,
@@ -98,7 +102,7 @@ class App(ctk.CTk):
 
     def _build_list(self):
         box = ctk.CTkFrame(self, fg_color=CARD, corner_radius=12)
-        box.pack(fill="both", expand=True, padx=26, pady=8)
+        box.grid(row=2, column=0, sticky="nsew", padx=26, pady=4)
 
         bar = ctk.CTkFrame(box, fg_color="transparent")
         bar.pack(fill="x", padx=12, pady=(8, 2))
@@ -124,7 +128,7 @@ class App(ctk.CTk):
 
     def _build_progress(self):
         card = ctk.CTkFrame(self, fg_color="transparent")
-        card.pack(fill="x", padx=26, pady=(4, 0))
+        card.grid(row=3, column=0, sticky="ew", padx=26, pady=(2, 0))
         self.progress = ctk.CTkProgressBar(card, height=12, corner_radius=6,
                                            fg_color=BTN, progress_color=ACCENT)
         self.progress.set(0)
@@ -135,7 +139,7 @@ class App(ctk.CTk):
 
     def _build_preview(self):
         self.prev = ctk.CTkFrame(self, fg_color=CARD, corner_radius=12)
-        self.prev.pack(fill="both", expand=True, padx=26, pady=8)
+        self.prev.grid(row=4, column=0, sticky="nsew", padx=26, pady=4)
         self.prev_title = ctk.CTkLabel(self.prev, text="Result preview",
                                        font=ctk.CTkFont(size=13, weight="bold"),
                                        text_color="#cbd5e1", anchor="w")
@@ -150,7 +154,7 @@ class App(ctk.CTk):
 
     def _build_footer(self):
         f = ctk.CTkFrame(self, fg_color="transparent")
-        f.pack(side="bottom", fill="x", padx=26, pady=(4, 18))
+        f.grid(row=5, column=0, sticky="ew", padx=26, pady=(4, 10))
 
         self.btn_scrape = ctk.CTkButton(
             f, text="Start Scraping", command=self.start_scraping,
