@@ -195,7 +195,7 @@ class App(ctk.CTk):
                 checkbox_width=22, checkbox_height=22,
             )
             cb.pack(fill="x", anchor="w", padx=8, pady=2)
-            self.check_vars[var] = f
+            self.check_vars[f] = var
         if self.empty_label is not None:
             self.empty_label.pack_forget()
             self.empty_label = None
@@ -203,15 +203,15 @@ class App(ctk.CTk):
         self.status.configure(text=f"{len(drop)} image(s) added — {len(self.images)} total.")
 
     def _selected(self):
-        return [p for v, p in self.check_vars.items() if v.get() == "on"]
+        return [f for f, var in self.check_vars.items() if var.get() == "on"]
 
     def select_all(self):
-        for v in self.check_vars:
-            v.set("on")
+        for var in self.check_vars.values():
+            var.set("on")
 
     def select_none(self):
-        for v in self.check_vars:
-            v.set("off")
+        for var in self.check_vars.values():
+            var.set("off")
 
     def _set_busy(self, busy):
         self._busy = busy
