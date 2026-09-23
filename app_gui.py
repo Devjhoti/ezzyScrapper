@@ -26,8 +26,7 @@ class App(ctk.CTk):
         ctk.set_default_color_theme("green")
 
         self.title("ezzyScrapper — Lead Screenshots to CSV")
-        self.geometry("940x660")
-        self.minsize(780, 560)
+        self._fit_to_screen()
         self.configure(fg_color=BG)
 
         self.images = []
@@ -39,13 +38,28 @@ class App(ctk.CTk):
 
         self._build_header()
         self._build_controls()
+        self._build_footer()
         self._build_list()
         self._build_progress()
         self._build_preview()
-        self._build_footer()
 
         self.status.configure(text="Add screenshots to get started.")
         self.after(120, self._poll)
+
+    def _fit_to_screen(self):
+        def scale():
+            try:
+                return ctk.ScalingTracker.get_window_dpi_scaling(self)
+            except Exception:
+                return 1.0
+        s = scale()
+        sw, sh = self.winfo_screenwidth(), self.winfo_screenheight()
+        avail_w = int(sw / s) - 16
+        avail_h = int(sh / s) - 60
+        w = min(940, avail_w)
+        h = min(660, avail_h)
+        self.geometry(f"{w}x{h}")
+        self.minsize(min(720, avail_w), min(520, avail_h))
 
     # ------------------------------------------------------------------ UI
     def _build_header(self):
@@ -136,7 +150,7 @@ class App(ctk.CTk):
 
     def _build_footer(self):
         f = ctk.CTkFrame(self, fg_color="transparent")
-        f.pack(fill="x", padx=26, pady=(4, 18))
+        f.pack(side="bottom", fill="x", padx=26, pady=(4, 18))
 
         self.btn_scrape = ctk.CTkButton(
             f, text="Start Scraping", command=self.start_scraping,
